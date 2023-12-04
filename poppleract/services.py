@@ -13,7 +13,7 @@ from fastapi import FastAPI, File, UploadFile
 from pydantic import BaseModel
 from starlette.responses import JSONResponse
 
-from text_extraction_service.text_extraction import PoppleractPdfExtractor
+from poppleract.text_extraction import PoppleractPdfExtractor
 
 SERVICES_HOST = "0.0.0.0"
 SERVICES_PORT = 8080
@@ -44,8 +44,8 @@ logger.info(f">>>>> app version: {str(VERSION)} \n")
 
 # ===== FastAPI app ===== #
 app = FastAPI(
-    title="text-extraction-service",
-    description="A set of REST APIs for extract text from a pdf document",
+    title="Poppleract-Services",
+    description="A set of APIs for extract text from a mixed pdf document",
     version=VERSION,
     logger=logger,
 )

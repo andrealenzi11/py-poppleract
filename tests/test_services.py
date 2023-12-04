@@ -3,7 +3,7 @@ import shutil
 
 from fastapi.testclient import TestClient
 
-from text_extraction_service.services import app
+from poppleract.services import app
 
 fast_api_client = TestClient(app)
 

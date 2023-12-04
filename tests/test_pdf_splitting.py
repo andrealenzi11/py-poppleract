@@ -4,7 +4,7 @@ from typing import Optional
 
 import pytest
 
-from text_extraction_service.pdf_splitting import PdfSplitter
+from poppleract.pdf_splitting import PdfSplitter
 
 
 @pytest.mark.parametrize("input_pdf_doc, "

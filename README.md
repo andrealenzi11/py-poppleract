@@ -13,7 +13,7 @@ With this tool (**Poppleract**), you can extract text from mixed documents effic
 ### Run the Poppleract services
 Expose on the desired port (ex. 50000) the Poppleract services:
 ```console
-docker run -it --rm -p 50000:8080 andrealenzi/poppleract-services:0.0.4
+docker run -it --rm -p 50000:8080 andrealenzi/poppleract-services:0.0.5
 ```
 
 See the APIs documentation:
@@ -79,7 +79,7 @@ Response body:
 Hybrid Approach for extract text from mixed PDFs: 
 Pdftotext on machine-readable pages + Tesseract OCR on images pages
 """
-from text_extraction_service.text_extraction import PoppleractPdfExtractor
+from poppleract.text_extraction import PoppleractPdfExtractor
 
 hybrid_extr_obj = PoppleractPdfExtractor(
     cache_folder="imgs/",  # Folder with doc images representing pages 
@@ -109,7 +109,7 @@ hybrid_extr_obj.extract_text(
 """
 Splitting of an input pdf documents in the relative png pages
 """
-from text_extraction_service.pdf_splitting import PdfSplitter
+from poppleract.pdf_splitting import PdfSplitter
 
 pdf_splitter_obj = PdfSplitter()
 

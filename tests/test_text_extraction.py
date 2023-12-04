@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from text_extraction_service.text_extraction import (
+from poppleract.text_extraction import (
     PdfToTextExtractor,
     TesseractPdfExtractor,
     PoppleractPdfExtractor,

@@ -8,7 +8,7 @@ from typing import Optional, Sequence, Union, List
 import pdftotext
 from pytesseract import image_to_string
 
-from text_extraction_service.pdf_splitting import PdfSplitter
+from poppleract.pdf_splitting import PdfSplitter
 
 
 class DocExtractorType(Enum):

@@ -1,6 +1,6 @@
 FROM andrealenzi/poppleract-base:23.12_5.3.3
 
-COPY text_extraction_service /text_extraction_service
+COPY poppleract /text_extraction_service
 COPY LICENSE /
 COPY requirements.txt /
 COPY version.json /
