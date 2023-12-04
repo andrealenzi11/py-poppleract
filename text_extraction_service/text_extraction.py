@@ -7,7 +7,6 @@ from typing import Optional, Sequence, Union, List
 
 import pdftotext
 from pytesseract import image_to_string
-from tqdm import tqdm
 
 from text_extraction_service.pdf_splitting import PdfSplitter
 
@@ -198,7 +197,7 @@ class TesseractPdfExtractor(OcrPdfExtractor):
                    lang: str,
                    tesseract_config: str) -> List[str]:
         all_texts = []
-        for img_filename in tqdm(sorted(os.listdir(images_folder_path))):
+        for img_filename in sorted(os.listdir(images_folder_path)):
             img_path = os.path.join(images_folder_path, img_filename)
             assert os.path.isfile(img_path)
             extracted_text = image_to_string(image=img_path,
@@ -214,7 +213,7 @@ class TesseractPdfExtractor(OcrPdfExtractor):
                      lang: str = "eng",
                      oem: int = 3,
                      psm: int = 3,
-                     tessdata_dir: str = "/usr/local/share/tessdata/",
+                     tessdata_dir: Optional[str] = None,
                      thresholding_method: int = 0,
                      preserve_interword_spaces: int = 1):
         """
@@ -234,12 +233,12 @@ class TesseractPdfExtractor(OcrPdfExtractor):
             Tesseract OCR Engine Modes, default to 3
         psm : int (optional)
             Tesseract Page Segmentation Modes, default to 3
-        tessdata_dir : str (optional)
-            location of tessdata path, default to '/usr/local/share/tessdata/'
+        tessdata_dir : Optional[str] (optional)
+            location of tessdata path (ex. '/usr/local/share/tessdata/'), default to None
         thresholding_method : int (optional)
-            Tesseract  binarization methods, default to 0
+            Tesseract binarization methods, default to 0
         preserve_interword_spaces : int (optional)
-           Tesseract   preserve spaces, default to 1
+           Tesseract preserve spaces, default to 1
         """
         self._check_paths(in_pdf_file_path=in_pdf_file_path,
                           out_txt_file_path=out_txt_file_path)
@@ -256,9 +255,10 @@ class TesseractPdfExtractor(OcrPdfExtractor):
                            f"--oem {oem} " \
                            f"--psm {psm} " \
                            f"--dpi {dpi} " \
-                           f"--tessdata-dir {tessdata_dir} " \
                            f"-c thresholding_method={thresholding_method} " \
-                           f"-c preserve_interword_spaces={preserve_interword_spaces} "
+                           f"-c preserve_interword_spaces={preserve_interword_spaces}"
+        if tessdata_dir:
+            tesseract_config = f"{tesseract_config} --tessdata-dir {tessdata_dir}"
         pages_contents = self._apply_ocr(images_folder_path=images_folder_path,
                                          lang=lang,
                                          tesseract_config=tesseract_config)
@@ -286,7 +286,7 @@ class PoppleractPdfExtractor(HybridPdfExtractor):
                      lang: str = "eng",
                      oem: int = 3,
                      psm: int = 3,
-                     tessdata_dir: str = "/usr/local/share/tessdata/",
+                     tessdata_dir: Optional[str] = None,
                      thresholding_method: int = 0,
                      preserve_interword_spaces: int = 1):
         """
@@ -313,12 +313,12 @@ class PoppleractPdfExtractor(HybridPdfExtractor):
             Tesseract OCR Engine Modes, default to 3
         psm : int (optional)
             Tesseract Page Segmentation Modes, default to 3
-        tessdata_dir : str (optional)
-            location of tessdata path, default to '/usr/local/share/tessdata/'
+        tessdata_dir : Optional[str] (optional)
+            location of tessdata path (ex. '/usr/local/share/tessdata/'), default to None
         thresholding_method : int (optional)
-            Tesseract  binarization methods, default to 0
+            Tesseract option to perform automatic image thresholding, default to 0
         preserve_interword_spaces : int (optional)
-           Tesseract   preserve spaces, default to 1
+           Tesseract option to preserve spaces, default to 1
         """
         self._check_paths(in_pdf_file_path=in_pdf_file_path,
                           out_txt_file_path=out_txt_file_path)
@@ -348,9 +348,10 @@ class PoppleractPdfExtractor(HybridPdfExtractor):
                            f"--oem {oem} " \
                            f"--psm {psm} " \
                            f"--dpi {dpi} " \
-                           f"--tessdata-dir {tessdata_dir} " \
                            f"-c thresholding_method={thresholding_method} " \
-                           f"-c preserve_interword_spaces={preserve_interword_spaces} "
+                           f"-c preserve_interword_spaces={preserve_interword_spaces}"
+        if tessdata_dir:
+            tesseract_config = f"{tesseract_config} --tessdata-dir {tessdata_dir} "
         result_pages = []
         for page_content, img_path in zip(extracted_pages, imgs_pages):
             # sufficient number of chars ---> use pdftotext output

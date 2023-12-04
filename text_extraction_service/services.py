@@ -6,7 +6,7 @@ import shutil
 import sys
 import traceback
 from pathlib import Path
-from typing import Union
+from typing import Union, Optional
 
 import uvicorn
 from fastapi import FastAPI, File, UploadFile
@@ -95,7 +95,7 @@ async def extract_text(
         lang: str = "eng",
         oem: int = 3,
         psm: int = 3,
-        tessdata_dir: str = "/usr/local/share/tessdata/",
+        tessdata_dir: Optional[str] = None,  # "/usr/local/share/tessdata/",
         thresholding_method: int = 0,
         preserve_interword_spaces: int = 1,
         input_file: UploadFile = File(...),
