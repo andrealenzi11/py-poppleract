@@ -8,18 +8,23 @@ Often, many pdf documents are of mixed type and contain:
 
 With this tool (**Poppleract**), you can extract text from mixed documents efficiently and easily .
 
+
 ## How to extract text from an input pdf through the web service
 
 ### Run the Poppleract services
-Expose on the desired port (ex. 50000) the Poppleract services:
+Build the Poppleract services image or pull it from Docker Hub:
 ```console
-docker run -it --rm -p 50000:8080 andrealenzi/poppleract-services:0.0.5
+docker pull andrealenzi/poppleract-services:0.0.6
+```
+
+Run and expose on the desired port (ex. 50000) the Poppleract services:
+```console
+docker run -it --rm -p 50000:8080 andrealenzi/poppleract-services:0.0.6
 ```
 
 See the APIs documentation:
 ```url
 http://0.0.0.0:50000/docs
-
 http://0.0.0.0:50000/redoc
 ```
 
@@ -72,6 +77,8 @@ Response body:
 }
 ```
 
+
+
 ## How to use programmatically *PoppleractPdfExtractor*
 
 ```python3
@@ -97,17 +104,18 @@ hybrid_extr_obj.extract_text(
     oem=3,  # Tesseract OCR Engine Mode 
     psm=3,  # Tesseract Page Segmentation Mode 
     tessdata_dir="/usr/local/share/tessdata/",  # Folder with Tesseract languages files
-    thresholding_method=0,  # Tesseract parameter to perform automatic image thresholding
+    thresholding_method=0,  # Tesseract parameter to select image thresholding method
     preserve_interword_spaces=1  # Tesseract option to preserve spaces
 )
 ```
+
 
 
 ## How to use programmatically *PdfSplitter*
 
 ```python3
 """
-Splitting of an input pdf documents in the relative png pages
+Splitting of an input pdf document in the relative png pages
 """
 from poppleract.pdf_splitting import PdfSplitter
 

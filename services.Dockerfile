@@ -9,8 +9,9 @@ RUN pip3 install -U pip setuptools wheel && \
     pip3 install -r /requirements.txt
 
 ENV PYTHONPATH=${PYTHONPATH}:/
+ENV SERVICES_HOST=0.0.0.0
 ENV SERVICES_PORT=8080
 EXPOSE ${SERVICES_PORT}
-WORKDIR /text_extraction_service
 
+WORKDIR /text_extraction_service
 ENTRYPOINT python3 services.py

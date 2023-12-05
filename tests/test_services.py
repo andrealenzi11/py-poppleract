@@ -1,5 +1,7 @@
+import json
 import os.path
 import shutil
+from pathlib import Path
 
 from fastapi.testclient import TestClient
 
@@ -12,6 +14,13 @@ def test_health_service():
     resp = fast_api_client.get(url="/health")
     assert resp.status_code == 200
     assert resp.json()["status"] == "ok"
+
+
+def test_get_version_service():
+    resp = fast_api_client.get(url="/version")
+    assert resp.status_code == 200
+    with open(file=os.path.join(Path(os.getcwd()).parent, "version.json"), mode="r", encoding="utf-8") as fr1:
+        assert resp.json()["version"] == str(json.load(fr1)["version"])
 
 
 def test_text_extraction_service():

@@ -9,14 +9,14 @@ from pathlib import Path
 from typing import Union, Optional
 
 import uvicorn
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Query
 from pydantic import BaseModel
 from starlette.responses import JSONResponse
 
 from poppleract.text_extraction import PoppleractPdfExtractor
 
-SERVICES_HOST = "0.0.0.0"
-SERVICES_PORT = 8080
+SERVICES_HOST = os.getenv("SERVICES_HOST", "0.0.0.0")
+SERVICES_PORT = os.getenv("SERVICES_PORT", 8080)
 
 
 class TextResponse(BaseModel):
@@ -81,6 +81,7 @@ def health() -> JSONResponse:
 @app.post(
     path="/extract_text",
     response_model=TextResponse,
+    response_description="Extracted text and additional doc information (file name, file size, num. extracted chars)",
     responses={
         422: {"model": ErrorResponse, "description": "Unprocessable Entity"},
         404: {"model": ErrorResponse, "description": "File Not Found"},
@@ -88,22 +89,31 @@ def health() -> JSONResponse:
     },
 )
 async def extract_text(
-        minimum_chars_number: int = 20,
-        raw: bool = False,
-        physical: bool = False,
-        dpi: int = 200,
-        lang: str = "eng",
-        oem: int = 3,
-        psm: int = 3,
-        tessdata_dir: Optional[str] = None,  # "/usr/local/share/tessdata/",
-        thresholding_method: int = 0,
-        preserve_interword_spaces: int = 1,
-        input_file: UploadFile = File(...),
+        minimum_chars_number: int = Query(default=20,
+                                          description="page threshold value to apply OCR or not"),
+        raw: bool = Query(default=False,
+                          description="Pdftotext parameter to keep strings in content stream order or not"),
+        physical: bool = Query(default=False,
+                               description="Pdftotext parameter to maintain original physical layout or not"),
+        dpi: int = Query(default=200,
+                         description="Dots per Inch (DPI) used by Pdftocairo and Tesseract"),
+        lang: str = Query(default="eng",
+                          description="Tesseract lang"),
+        oem: int = Query(default=3,
+                         description="Tesseract OCR Engine Mode"),
+        psm: int = Query(default=3,
+                         description="Tesseract Page Segmentation Mode"),
+        tessdata_dir: Optional[str] = Query(default=None,
+                                            description="Location of tessdata path (ex. '/usr/local/share/tessdata/')"),
+        thresholding_method: int = Query(default=0,
+                                         description="Tesseract option to select image thresholding method"),
+        preserve_interword_spaces: int = Query(default=1,
+                                               description="Tesseract option to preserve spaces"),
+        input_file: UploadFile = File(default=...,
+                                      description="Input pdf file to upload"),
 ) -> Union[TextResponse, JSONResponse]:
     """
     Text Extraction Service
-    - **input**: pdf input file
-    - **output**: extracted text
     """
     pdf_file_path, txt_file_path, content = None, None, None
     try:

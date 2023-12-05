@@ -222,23 +222,23 @@ class TesseractPdfExtractor(OcrPdfExtractor):
         Parameters
         ----------
         in_pdf_file_path : Union[str, Path]
-            input path of the pdf document
+            Input path of the pdf document
         out_txt_file_path : Union[str, Path]
-            output path of the txt file
+            Output path of the txt file
         dpi : int (optional)
-            DPI for images, default to 200
+            Dots per Inch (DPI) used by Pdftocairo and Tesseract, default to 200
         lang : str (optional)
             Tesseract OCR language, default to 'eng'
         oem : int (optional)
-            Tesseract OCR Engine Modes, default to 3
+            Tesseract OCR Engine Mode, default to 3
         psm : int (optional)
-            Tesseract Page Segmentation Modes, default to 3
+            Tesseract Page Segmentation Mode, default to 3
         tessdata_dir : Optional[str] (optional)
-            location of tessdata path (ex. '/usr/local/share/tessdata/'), default to None
+            Location of tessdata path (ex. '/usr/local/share/tessdata/'), default to None
         thresholding_method : int (optional)
-            Tesseract binarization methods, default to 0
+            Tesseract parameter to select image thresholding method, default to 0
         preserve_interword_spaces : int (optional)
-           Tesseract preserve spaces, default to 1
+           Tesseract option to preserve spaces, default to 1
         """
         self._check_paths(in_pdf_file_path=in_pdf_file_path,
                           out_txt_file_path=out_txt_file_path)
@@ -295,28 +295,28 @@ class PoppleractPdfExtractor(HybridPdfExtractor):
         Parameters
         ----------
         in_pdf_file_path : Union[str, Path]
-            input path of the pdf document
+            Input path of the pdf document
         out_txt_file_path : Union[str, Path]
-            output path of the txt file
+            Output path of the txt file
         minimum_chars_number: int (optional)
-            for each page: only if we extract less than this number of chars with Pdftotext, then we apply OCR.
+            For each page: only if we extract less than this number of chars with Pdftotext, then we apply OCR.
             Default to 20
         raw : bool (optional)
-            boolean flag to keep strings in content stream order or not, default to False
+            Boolean flag to keep strings in content stream order or not, default to False
         physical : bool (optional)
-            boolean flag to maintain original physical layout or not, default to False
+            Boolean flag to maintain original physical layout or not, default to False
         dpi : int (optional)
-            DPI for images, default to 200
+            Dots per Inch (DPI) used by Pdftocairo and Tesseract, default to 200
         lang : str (optional)
             Tesseract OCR language, default to 'eng'
         oem : int (optional)
-            Tesseract OCR Engine Modes, default to 3
+            Tesseract OCR Engine Mode, default to 3
         psm : int (optional)
-            Tesseract Page Segmentation Modes, default to 3
+            Tesseract Page Segmentation Mode, default to 3
         tessdata_dir : Optional[str] (optional)
-            location of tessdata path (ex. '/usr/local/share/tessdata/'), default to None
+            Location of tessdata path (ex. '/usr/local/share/tessdata/'), default to None
         thresholding_method : int (optional)
-            Tesseract option to perform automatic image thresholding, default to 0
+            Tesseract option to select image thresholding method, default to 0
         preserve_interword_spaces : int (optional)
            Tesseract option to preserve spaces, default to 1
         """
