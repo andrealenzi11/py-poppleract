@@ -1,6 +1,6 @@
 FROM andrealenzi/poppleract-base:23.12_5.3.3
 
-COPY poppleract /text_extraction_service
+COPY poppleract /poppleract
 COPY LICENSE /
 COPY requirements.txt /
 COPY version.json /
@@ -13,5 +13,5 @@ ENV SERVICES_HOST=0.0.0.0
 ENV SERVICES_PORT=8080
 EXPOSE ${SERVICES_PORT}
 
-WORKDIR /text_extraction_service
+WORKDIR /poppleract
 ENTRYPOINT python3 services.py
