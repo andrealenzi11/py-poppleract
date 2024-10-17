@@ -9,17 +9,19 @@ Often, many pdf documents are of mixed type and contain:
 With this tool (**Poppleract**), you can extract text from mixed documents efficiently and easily .
 
 
+
 ## How to extract text from an input pdf through the web service
+
 
 ### Run the Poppleract services
 Build the Poppleract services image or pull it from Docker Hub:
 ```console
-docker pull andrealenzi/poppleract-services:0.0.7
+docker pull andrealenzi/poppleract-services:0.0.8
 ```
 
 Run and expose on the desired port (ex. 50000) the Poppleract services:
 ```console
-docker run -it --rm -p 50000:8080 andrealenzi/poppleract-services:0.0.7
+docker run -it --rm -p 50000:8080 andrealenzi/poppleract-services:0.0.8
 ```
 
 See the APIs documentation:
@@ -28,8 +30,12 @@ http://0.0.0.0:50000/docs
 http://0.0.0.0:50000/redoc
 ```
 
+
 ### Call the Text Extraction Service
-Perform a **CURL** to extract text from the specified input pdf doc:
+Manually interact with the Openapi interface (Swagger) on [http://0.0.0.0:50000/docs#/default/extract_text_extract_text_post](http://0.0.0.0:50000/docs#/default/extract_text_extract_text_post) 
+
+
+Or perform a **CURL** to extract text from the specified input pdf doc:
 ```console
 curl -X 'POST' \
   'http://0.0.0.0:50000/extract_text?minimum_chars_number=20&raw=false&physical=false&dpi=200&lang=eng&oem=3&psm=3&thresholding_method=0&preserve_interword_spaces=1' \

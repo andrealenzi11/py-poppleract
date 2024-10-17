@@ -3,10 +3,12 @@ import json
 import logging
 import os
 import shutil
+import subprocess
 import sys
 import traceback
 from pathlib import Path
-from typing import Union, Optional
+from subprocess import TimeoutExpired
+from typing import Union, Optional, List
 
 import uvicorn
 from fastapi import FastAPI, File, UploadFile, Query
@@ -66,10 +68,26 @@ def read_root() -> JSONResponse:
     return JSONResponse(content={"message": f"text-extraction-service ({VERSION}) root page!"}, status_code=200, )
 
 
+def get_shell_command_output(cmd: List[str]) -> str:
+    try:
+        proc = subprocess.run(cmd, capture_output=True, text=True, check=False, timeout=5)
+    except TimeoutExpired as t_err:
+        logger.error(str(t_err))
+        return "timeout_error"
+    return str(proc.stdout) if str(proc.stdout) else str(proc.stderr)
+
+
 @app.get("/version")
 def version() -> JSONResponse:
-    """ This service returns the application version """
-    return JSONResponse(content={"version": str(VERSION)}, status_code=200)
+    """ This service returns the application version and information about Tesseract and Poppler pdftotext utility """
+    return JSONResponse(
+        content={
+            "version": str(VERSION),
+            "tesseract_info": get_shell_command_output(cmd=['tesseract', '--version']),
+            "pdftotext_info": get_shell_command_output(cmd=['pdftotext', '-v']),
+        },
+        status_code=200
+    )
 
 
 @app.get("/health")

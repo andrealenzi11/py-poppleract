@@ -1,8 +1,9 @@
 #!/bin/bash
 
 VERSION=$(python3 -c "import sys, json; print(json.load(sys.stdin)['version'])" < 'version.json')
-BASE_IMAGE_NAME=andrealenzi/poppleract-base:23.12_5.3.3
+BASE_IMAGE_NAME=andrealenzi/poppleract-base:24.10_5.4.1
 SERVICES_IMAGE_NAME=andrealenzi/poppleract-services:${VERSION}
+
 echo "(*) VERSION:" "${VERSION}"
 echo "(*) BASE_IMAGE_NAME:" "${BASE_IMAGE_NAME}"
 echo "(*) SERVICES_IMAGE_NAME:" "${SERVICES_IMAGE_NAME}"
